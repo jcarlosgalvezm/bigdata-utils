@@ -25,31 +25,35 @@ echo '# Updating the system packages...'
 yum update
 
 packagelist='net-tools epel-release gcc'
-yum install -y $packagelist
-
-groupslist='"Development Tools"'
+groupslist=''
 
 if [ $host_name == "cm" ]; then
-        groupslist=$grouplist' "X Window System" "Xfce"'
+        groupslist=$groupslist'"Development Tools" "X Window System" "Xfce"'
+        packagelist=$packagelist' wget'
 fi
 
 yum groupinstall -y $groupslist
+yum install -y $packagelist
+
+if [ $host_name == "cm" ]; then
+        echo '# Opening port 7180/tcp...'
+        firewall-cmd --zone=public --add-port=7180/tcp --permanent
+        firewall-cmd --reload
+fi
 
 echo '# Setting the hostname...'
 hostname $host_name
 echo $host_name > /etc/hostname
 
-echo '# Setting the namespaces...'
+echo '# Setting the cluster hosts...'
 echo -e "${cm}"   '             cm                              cm\n'\
 "${nodo1}"'             nodo1.hdp.hadoop                nodo1\n'\
 "${nodo2}"'             nodo2.hdp.hadoop                nodo2\n'\
 "${nodo3}"'             nodo3.hdp.hadoop                nodo3\n'\
 "${nodo4}"'             nodo4.hdp.hadoop                nodo4\n' > /etc/hosts
 
-echo '# Setting ip static...'
+echo '# Setting a static ip address...'
 sed -i -e 's/BOOTPROTO="dhcp"/BOOTPROTO="static"/g' /etc/sysconfig/network-scripts/ifcfg-enp0s3
-
-echo '# Setting the ip address...'
 echo -e 'IPADDR='"${ip_addr}"'\n'\
 'NETMASK="255.255.255.0"\n'\
 'GATEWAY="192.168.1.1"\n'\
