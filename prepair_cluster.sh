@@ -24,7 +24,7 @@ mkdir ~/.ssh/
 echo '# Updating the system packages...'
 yum update
 
-packagelist='net-tool epel-release'
+packagelist='net-tools epel-release'
 yum install -y $packagelist
 
 if [ $host_name == "cm" ]; then
