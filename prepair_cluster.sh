@@ -24,13 +24,16 @@ mkdir ~/.ssh/
 echo '# Updating the system packages...'
 yum update
 
-packagelist='net-tools epel-release'
+packagelist='net-tools epel-release gcc'
 yum install -y $packagelist
 
+groupslist='"Development Tools"'
+
 if [ $host_name == "cm" ]; then
-        groupslist='"X Window System" "Xfce"'
-        yum groupinstall -y $groupslist
+        groupslist=$grouplist' "X Window System" "Xfce"'
 fi
+
+yum groupinstall -y $groupslist
 
 echo '# Setting the hostname...'
 hostname $host_name
