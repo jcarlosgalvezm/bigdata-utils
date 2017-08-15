@@ -38,8 +38,12 @@ yum install -y $packagelist
 if [ $host_name == "cm" ]; then
         echo '# Opening port 7180/tcp...'
         firewall-cmd --zone=public --add-port=7180/tcp --permanent
-        firewall-cmd --zone=public --add-port=7182/tcp --permanen
+        firewall-cmd --zone=public --add-port=7182/tcp --permanent
         firewall-cmd --reload
+else
+        echo '# Disabling the firewall...'
+        systemctl disable firewalld
+        systemctl stop firewalld
 fi
 
 echo '# Setting the hostname...'
