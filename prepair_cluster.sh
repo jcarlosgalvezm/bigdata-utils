@@ -1,12 +1,21 @@
 #Prepair a cluster
 
-host_name=$1
-
 cm='192.168.1.120'
 nodo1='192.168.1.121'
 nodo2='192.168.1.122'
 nodo3='192.168.1.123'
 nodo4='192.168.1.124'
+
+sysctl vm.swappiness=10
+echo 10 > /proc/sys/vm/swappiness
+
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+
+echo -e 'echo never > /sys/kernel/mm/transparent_hugepage/defrag\n'\
+'echo never > /sys/kernel/mm/transparent_hugepage/enabled' >> /etc/rc.local
+
+host_name=$1
 
 case $host_name in
         "cm") ip_addr=$cm;;
