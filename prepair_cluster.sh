@@ -27,18 +27,19 @@ case $host_name in
            exit 0;;
 esac
 
-echo '# Updating the system packages...'
-yum update
+echo '# Updating and installing system packages...'
+yum update -y
 
 packagelist='net-tools epel-release gcc'
 groupslist=''
 
 if [ $host_name == "cm" ]; then
-        groupslist=$groupslist'"Development Tools" "X Window System" "Xfce"'
+        yum groupinstall -y "Development Tools"
+        yum groupinstall -y "X Window System"
+        yum groupinstall -y "Xfce"
         packagelist=$packagelist' wget'
 fi
 
-yum groupinstall -y $groupslist
 yum install -y $packagelist
 
 echo '# Disabling the firewall...'
