@@ -27,9 +27,6 @@ case $host_name in
            exit 0;;
 esac
 
-echo '# Generating the ssh directory...'
-mkdir ~/.ssh/
-
 echo '# Updating the system packages...'
 yum update
 
