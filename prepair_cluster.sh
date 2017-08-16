@@ -40,6 +40,10 @@ if [ $host_name == "cm" ]; then
         packagelist=$packagelist' wget'
 fi
 
+if [ $host_name == "cm" ]; then
+        wget http://archive.cloudera.com/cm5/installer/latest/cloudera-manager-installer.bin
+fi
+
 yum install -y $packagelist
 
 echo '# Disabling the firewall...'
